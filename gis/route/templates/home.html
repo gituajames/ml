@@ -1,0 +1,44 @@
+{% load leaflet_tags %}
+{% load geojson_tags %}
+
+<html>
+    <head>
+        {% leaflet_js %}
+        {% leaflet_css %}
+        <style>
+
+                .leaflet-container {  /* all maps */
+                    width:  600px;
+                    height: 400px;
+                }
+            
+                #specialbigmap {
+                    height: 800px;
+                }
+            
+            </style>
+    </head>
+
+    <body>
+            <p>heloo am james</p>
+
+            {% for p in point %}
+                <h1>{{ p.name }}</h1>
+            {% endfor %}
+
+            <h1>this geojson</h1>
+            {{j_son}}
+
+            <script type='text/javascript'>
+                // var collection = {{ j_son|geojsonfeature|safe }};
+                function map_init_basic(map, options){
+                    // L.marker([36.9580, 0.4371]).addTo(map);
+                    // function onEachFeature()
+                    var myStyle = {};
+                    var json_point = {{ j_son|safe }};
+                    L.geoJSON(json_point, {style: myStyle}).addTo(map);
+                }
+            </script>
+            {% leaflet_map "yourmap" callback="window.map_init_basic" %}   
+    </body>
+</html>
